@@ -31,16 +31,48 @@ Chatroom.prototype = {
 					document.getElementById('nicknameInput').focus();
 				};
 			}, false);
+			document.getElementById('sendBtn').addEventListener('click', function(){
+				var messageInput = document.getElementById('messageInput'),
+					msg = messageInput.value;
+				messageInput.value='';
+				messageInput.focus();
+				if(msg.trim().length != 0){
+					that.socket.emit('postMsg', msg);
+					that._displayNewMsg('me', msg);
+				}
+			})
 		});
 
 		this.socket.on('nickExisted', function() {
-     		document.getElementById('info').textContent = '!nickname is taken, choose another pls'; //显示昵称被占用的提示
+     		document.getElementById('info').textContent = 'nickName is taken, choose another pls'; //显示昵称被占用的提示
  		});
 
 		this.socket.on('loginSuccess', function(){
-			document.title = 'chatroom | ' + document.getElementById('nicknameInput').value;
+			document.title = 'Chatroom | ' + document.getElementById('nicknameInput').value;
 			document.getElementById('loginWrapper').style.display = 'none';
 			document.getElementById('messageInput').focus();
 		})
+
+		this.socket.on('system', function(nickName, userCount, type){
+			// 判断用户是连接还是离开以显示不同的信息
+			var msg = nickName + (type == 'login' ? ' joined' : ' left');
+			//指定系统消息显示为红色
+			that._displayNewMsg('system', msg ,'red')
+			//将在线人数显示到页面顶部
+			document.getElementById('status').textContent = userCount + (userCount > 1 ? ' users' : ' user') + ' online';
+		})
+
+		this.socket.on('newMsg', function(user, msg){
+			that._displayNewMsg(user, msg);
+		})
+	},
+	_displayNewMsg: function(user, msg, color){
+		var container = document.getElementById('historyMsg'),
+			msgToDisplay = document.createElement('p'),
+			date = new Date().toTimeString().substr(0, 8);
+		msgToDisplay.style.color = color || '#000';
+		msgToDisplay.innerHTML = user + '<span class = "timespan">(' + date +'): </span>' +msg;
+		container.appendChild(msgToDisplay);
+		container.scrollTop = container.scrollHeight;
 	}
 }
