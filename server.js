@@ -20,6 +20,7 @@ io.sockets.on('connection', function(socket) {
 			io.sockets.emit('system', nickname, users.length, 'login');
 		}
 	})
+
     //断开连接的事件
     socket.on('disconnect', function(){
     	//将断开连接的用户从users中删除
