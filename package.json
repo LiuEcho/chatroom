@@ -1,0 +1,28 @@
+{
+  "name": "chatroom",
+  "version": "1.0.0",
+  "description": "chatroom",
+  "main": "server.js",
+  "dependencies": {
+    "express": "^4.13.3",
+    "socket.io": "^1.3.7"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "test",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LiuEcho/chatroom.git"
+  },
+  "keywords": [
+    "chatroom"
+  ],
+  "author": "liuwayong",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/LiuEcho/chatroom/issues"
+  },
+  "homepage": "https://github.com/LiuEcho/chatroom#readme"
+}
